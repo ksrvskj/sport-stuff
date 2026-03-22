@@ -11,11 +11,10 @@ A collection of personal tools — workout routines, batch-cooking recipes, and 
 ## Structure
 
 ```
-index.html          <- Hub / dashboard
-tools/
-  workout.html      <- Morning workout
-  recipes.html      <- Batch cooking recipes
-  coffee.html       <- Coffee brew guides
+index.html      <- Hub / dashboard
+workout.html    <- Morning workout
+recipes.html    <- Batch cooking recipes
+coffee.html     <- Coffee brew guides
 ```
 
 Open at: `https://ksrvskj.github.io/sport-stuff/`
