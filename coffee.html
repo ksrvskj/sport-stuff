@@ -7,7 +7,7 @@
 <meta name="theme-color" content="#0f0f12">
 <title>Кофе / Coffee</title>
 <link rel="stylesheet" href="style.css">
-<style>:root{--accent:#8B5A2B;--br:#8B5A2B;--br-dim:rgba(139,90,43,.25);--br-bg:rgba(139,90,43,.08)}</style>
+<style>:root{--accent:#9b928a;--br:#9b928a;--br-dim:rgba(155,146,138,.25);--br-bg:rgba(155,146,138,.08)}</style>
 </head>
 <body>
 
@@ -15,11 +15,11 @@
   <div class="header-top">
     <div>
       <div class="header-sub">Filter Coffee</div>
-      <h1 id="hTitle">☕ Кофе</h1>
+      <h1 id="hTitle">Кофе</h1>
       <div class="header-desc">Chemex · V60 · Aeropress · Cold Brew</div>
       <div class="header-links">
         <a class="header-link" href="index.html">← Hub</a>
-        <a class="header-link" href="recipes.html" id="hRecipes">🍲 Рецепты</a>
+        <a class="header-link" href="recipes.html" id="hRecipes">Рецепты</a>
       </div>
     </div>
     <div class="lang-toggle">
@@ -36,16 +36,24 @@ function setLang(l){lang=l;localStorage.setItem('lang',l);render();updateURL();}
 function t(o){if(!o)return'';if(typeof o==='string')return o;return o[lang]||o.ru||o.en||'';}
 
 const UI={
-  title:{ru:"☕ Кофе",en:"☕ Coffee"},
-  recipes:{ru:"🍲 Рецепты",en:"🍲 Recipes"},
+  title:{ru:"Кофе",en:"Coffee"},
+  recipes:{ru:"Рецепты",en:"Recipes"},
   coffee:{ru:"Кофе",en:"Coffee"},
   recipe:{ru:"Рецепт",en:"Recipe"},
   grind:{ru:"Помол",en:"Grind"},
 };
 
+const METHOD_ICONS={
+  chemex:`<svg viewBox="0 0 24 24"><path d="M9 3h6"/><path d="M9 3l3 8-3 10h8l-3-10 3-8"/><path d="M6 21h12"/><path d="M10 11h4"/></svg>`,
+  v60:`<svg viewBox="0 0 24 24"><path d="M6 4h12"/><path d="M8 4l4 14 4-14"/><path d="M12 18v3"/></svg>`,
+  "aero-filter":`<svg viewBox="0 0 24 24"><path d="M8 7h8v12H8z"/><path d="M12 3v4"/><path d="M9 3h6"/><path d="M12 19v3"/></svg>`,
+  "aero-espresso":`<svg viewBox="0 0 24 24"><path d="M8 7h8v12H8z"/><path d="M12 3v4"/><path d="M9 3h6"/><path d="M5 13l2 1"/><path d="M5 16l2 1"/></svg>`,
+  "aero-cold":`<svg viewBox="0 0 24 24"><path d="M8 7h8v12H8z"/><path d="M12 3v4"/><path d="M9 3h6"/><path d="M12 19v3"/><path d="M4 13v3"/><path d="M3 14.5h2"/></svg>`
+};
+
 const M=[
   {
-    id:"chemex",emoji:"⏳",name:"Chemex",style:"Pour Over · 1:16",
+    id:"chemex",name:"Chemex",style:"Pour Over · 1:16",
     meta:{ru:"3.5–4 мин · Чистый, яркий",en:"3.5–4 min · Clean, bright"},
     ratio:16,dd:45,presets:[30,36,45],
     grind:65,grindT:{ru:"Средне-крупный",en:"Medium-coarse"},
@@ -59,7 +67,7 @@ const M=[
     notes:{ru:"Фильтр промыть горячей водой (убирает бумажный вкус). Лить медленно, тонкой струёй.",en:"Rinse filter with hot water (removes paper taste). Pour slowly, thin stream."}
   },
   {
-    id:"v60",emoji:"🔻",name:"V60",style:"Pour Over · 1:16",
+    id:"v60",name:"V60",style:"Pour Over · 1:16",
     meta:{ru:"2.5–3 мин · Экспериментальный",en:"2.5–3 min · Experimental"},
     ratio:16,dd:15,presets:[12,15,20],
     grind:50,grindT:{ru:"Средний",en:"Medium"},
@@ -72,7 +80,7 @@ const M=[
     notes:{ru:"Пока нет любимого рецепта — экспериментируй! Помол чуть мельче чем Chemex. Swirl после bloom.",en:"No favorite recipe yet — experiment! Grind slightly finer than Chemex. Swirl after bloom."}
   },
   {
-    id:"aero-filter",emoji:"🔄",name:"Aeropress — Filter",style:"Immersion · Inverted",
+    id:"aero-filter",name:"Aeropress — Filter",style:"Immersion · Inverted",
     meta:{ru:"~2 мин · Мягкий",en:"~2 min · Smooth"},
     ratio:16,dd:15,presets:[12,15,18],
     grind:45,grindT:{ru:"Средний",en:"Medium"},
@@ -85,7 +93,7 @@ const M=[
     notes:{ru:"Inverted method: поршень снизу, аэропресс перевёрнут. Флип на кружку в 1:00.",en:"Inverted method: plunger at bottom, flip onto cup at 1:00."}
   },
   {
-    id:"aero-espresso",emoji:"💥",name:"Aeropress — Espresso",style:"Concentrated · 1:6",
+    id:"aero-espresso",name:"Aeropress — Espresso",style:"Concentrated · 1:6",
     meta:{ru:"~1 мин · Крепкий",en:"~1 min · Strong"},
     ratio:6,dd:18,presets:[15,18,20],
     grind:25,grindT:{ru:"Мелкий",en:"Fine"},
@@ -98,7 +106,7 @@ const M=[
     notes:{ru:"Максимальное давление. Разбавить водой = американо, молоком = латте.",en:"Maximum pressure. Dilute with water = americano, milk = latte."}
   },
   {
-    id:"aero-cold",emoji:"🧊",name:"Aeropress — Cold Brew",style:"Cold · Quick",
+    id:"aero-cold",name:"Aeropress — Cold Brew",style:"Cold · Quick",
     meta:{ru:"2–3 мин · Гладкий",en:"2–3 min · Smooth"},
     ratio:8,dd:20,presets:[15,20,25],
     grind:25,grindT:{ru:"Мелкий",en:"Fine"},
@@ -171,11 +179,11 @@ function render(){
     let total=0;
     return `<div class="method${isOpen?' open':''}" id="m-${m.id}">
       <div class="m-top" onclick="toggle('${m.id}')">
-        <div class="m-emoji">${m.emoji}</div>
+        <div class="m-emoji">${METHOD_ICONS[m.id]||''}</div>
         <div class="m-body">
           <div class="m-name">${m.name}</div>
           <div class="m-style">${m.style}</div>
-          <div class="m-meta">⏱ ${t(m.meta)}${brewTimers[m.id]?.iv?` · <span class="brew-running">${fmtTime(brewTimers[m.id].elapsed)}</span>`:brewTimers[m.id]?.done?` · <span class="brew-running">✓</span>`:''}</div>
+          <div class="m-meta">${t(m.meta)}${brewTimers[m.id]?.iv?` · <span class="brew-running">${fmtTime(brewTimers[m.id].elapsed)}</span>`:brewTimers[m.id]?.done?` · <span class="brew-running">✓</span>`:''}</div>
         </div>
         <div class="m-arrow">›</div>
       </div>
