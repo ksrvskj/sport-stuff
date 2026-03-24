@@ -7,52 +7,7 @@
 <meta name="theme-color" content="#0f0f12">
 <title>Кофе / Coffee</title>
 <link rel="stylesheet" href="style.css">
-<style>
-:root{--accent:#8B5A2B;--br:#8B5A2B;--br-dim:rgba(139,90,43,.25);--br-bg:rgba(139,90,43,.08)}
-
-.methods{padding:0 16px 60px}
-.method{border-radius:var(--radius);margin-bottom:10px;border:1px solid var(--br-dim);background:var(--surface);overflow:hidden}
-.m-top{display:flex;gap:12px;align-items:center;padding:14px 16px;cursor:pointer}
-.m-top:active{opacity:.8}
-.m-emoji{font-size:26px;width:40px;height:40px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.03);border-radius:var(--radius-sm);flex-shrink:0}
-.m-body{flex:1;min-width:0}
-.m-name{font-weight:500;font-size:15px}
-.m-style{font-size:11px;color:var(--br);font-weight:600;text-transform:uppercase;letter-spacing:.8px;margin-top:1px}
-.m-meta{font-size:11px;opacity:.35;margin-top:2px}
-.m-arrow{color:rgba(255,255,255,.2);font-size:18px;flex-shrink:0;transition:transform .2s}
-.method.open .m-arrow{transform:rotate(90deg)}
-.m-detail{display:none;padding:0 16px 16px}
-.method.open .m-detail{display:block}
-
-.dose-row{display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap}
-.dose-label{font-size:13px;opacity:.5}
-.dose-input{width:58px;padding:7px 6px;border-radius:8px;border:1.5px solid var(--br-dim);background:rgba(255,255,255,.04);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:600;text-align:center}
-.dose-input:focus{outline:none;border-color:var(--br)}
-.dose-unit{font-size:13px;opacity:.4}
-.dose-arrow{font-size:14px;opacity:.35;margin:0 2px}
-.dose-water{font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:600;color:var(--br)}
-.dose-water-unit{font-size:13px;opacity:.4}
-
-.presets{display:flex;gap:6px;margin-bottom:16px}
-.preset{padding:5px 12px;border-radius:6px;border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.03);color:rgba(255,255,255,.35);font-size:11px;font-weight:600;cursor:pointer;font-family:'JetBrains Mono',monospace;transition:all .12s}
-.preset.active{border-color:var(--br-dim);color:var(--br);background:var(--br-bg)}
-
-.grind-row{display:flex;align-items:center;gap:8px;margin-bottom:12px}
-.grind-label{font-size:11px;opacity:.4}
-.grind-bar{flex:1;height:6px;border-radius:3px;background:rgba(255,255,255,.06);position:relative;overflow:hidden}
-.grind-fill{height:100%;border-radius:3px;background:var(--br);transition:width .3s}
-.grind-text{font-size:11px;font-weight:600;color:var(--br);min-width:70px;text-align:right}
-
-.pours{border-radius:var(--radius-sm);background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.05);overflow:hidden;margin-bottom:12px}
-.pour-header{padding:10px 14px;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(--br);opacity:.7;border-bottom:1px solid rgba(255,255,255,.04)}
-.pour{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.03)}
-.pour:last-child{border-bottom:none}
-.pour-time{font-family:'JetBrains Mono',monospace;font-size:12px;color:rgba(255,255,255,.35);min-width:42px;flex-shrink:0}
-.pour-amount{font-family:'JetBrains Mono',monospace;font-weight:600;font-size:14px;color:var(--text);min-width:55px;flex-shrink:0}
-.pour-note{font-size:12px;opacity:.5;line-height:1.4}
-.pour-total{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--br);opacity:.6;padding:6px 14px;text-align:right}
-.note{font-size:12px;line-height:1.6;font-style:italic;opacity:.45;padding:10px 14px;border-left:2px solid var(--br);border-radius:0 8px 8px 0;background:rgba(139,90,43,.03);margin-top:8px}
-</style>
+<style>:root{--accent:#8B5A2B;--br:#8B5A2B;--br-dim:rgba(139,90,43,.25);--br-bg:rgba(139,90,43,.08)}</style>
 </head>
 <body>
 
@@ -157,12 +112,47 @@ const M=[
   }
 ];
 
-let openMethod=null,doses={};
+let openMethod=null,doses={},brewTimers={};
 function getDose(m){return doses[m.id]||m.dd;}
 function setDose(id,v){const n=parseInt(v);if(n>0&&n<200){doses[id]=n;render();}}
 function setPreset(id,v){doses[id]=v;render();}
 function toggle(id){openMethod=openMethod===id?null:id;render();updateURL();
   if(openMethod)setTimeout(()=>document.getElementById('m-'+id)?.scrollIntoView({behavior:'smooth',block:'start'}),50);
+}
+function parseTime(s){const p=s.split(':');return(+p[0])*60+(+p[1]);}
+function fmtTime(s){return`${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;}
+function toggleBrew(id){
+  const bt=brewTimers[id];
+  if(bt&&bt.iv){clearInterval(bt.iv);bt.iv=null;updateBrewRing(id);return;}
+  if(!bt)brewTimers[id]={elapsed:0,iv:null};
+  const b=brewTimers[id];
+  if(b.done){b.elapsed=0;b.done=false;updateBrewRing(id);return;}
+  b.iv=setInterval(()=>{b.elapsed++;updateBrewRing(id);},1000);
+  updateBrewRing(id);
+}
+function updateBrewRing(id){
+  const el=document.getElementById('brew-'+id);if(!el)return;
+  const b=brewTimers[id],m=M.find(x=>x.id===id);if(!b||!m)return;
+  const dose=getDose(m),data=m.calc(dose);
+  const times=data.pours.map(p=>parseTime(p.time));
+  const lastTime=times[times.length-1];
+  const totalEst=lastTime+60;
+  const pct=Math.min((b.elapsed/totalEst)*100,100);
+  const done=b.elapsed>=totalEst;
+  if(done&&b.iv){clearInterval(b.iv);b.iv=null;b.done=true;}
+  const ring=el.querySelector('.timer-ring');
+  const inner=el.querySelector('.timer-inner');
+  const hint=el.querySelector('.timer-hint');
+  ring.style.background=`conic-gradient(${done?'var(--vegan)':'var(--br,var(--accent))'} ${pct}%, rgba(255,255,255,0.1) ${pct}%)`;
+  inner.style.color=done?'var(--vegan)':'var(--text)';
+  inner.textContent=done?'\u2713':fmtTime(b.elapsed);
+  hint.textContent=done?(lang==='ru'?'готово — нажми для сброса':'done — tap to reset'):b.iv?(lang==='ru'?'пауза':'tap to pause'):(lang==='ru'?'старт':'tap to start');
+  // highlight active pour
+  const pours=document.querySelectorAll('#m-'+id+' .pour');
+  pours.forEach((p,i)=>{
+    const start=times[i],next=times[i+1]||totalEst;
+    p.classList.toggle('active',b.iv&&b.elapsed>=start&&b.elapsed<next);
+  });
 }
 
 function render(){
@@ -170,10 +160,10 @@ function render(){
   document.getElementById('hRecipes').textContent=t(UI.recipes);
   document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.textContent.toLowerCase()===lang));
 
-  document.getElementById('methods').innerHTML=M.map(m=>{
+  document.getElementById('methods').innerHTML=M.map((m,idx)=>{
     const isOpen=openMethod===m.id,dose=getDose(m),data=m.calc(dose);
     let total=0;
-    return `<div class="method${isOpen?' open':''}" id="m-${m.id}">
+    return `<div class="method${isOpen?' open':''}" id="m-${m.id}" style="animation:fadeUp .3s ease ${idx*.05}s both">
       <div class="m-top" onclick="toggle('${m.id}')">
         <div class="m-emoji">${m.emoji}</div>
         <div class="m-body">
@@ -198,6 +188,12 @@ function render(){
           <span class="grind-label">${t(UI.grind)}</span>
           <div class="grind-bar"><div class="grind-fill" style="width:${m.grind}%"></div></div>
           <span class="grind-text">${t(m.grindT)}</span>
+        </div>
+        <div class="brew-timer" id="brew-${m.id}">
+          <div class="timer-ring" onclick="toggleBrew('${m.id}')" style="background:conic-gradient(var(--br,var(--accent)) 0%, rgba(255,255,255,0.1) 0%)">
+            <div class="timer-inner">${brewTimers[m.id]?fmtTime(brewTimers[m.id].elapsed):'0:00'}</div>
+          </div>
+          <span class="timer-hint">${lang==='ru'?'старт':'tap to start'}</span>
         </div>
         <div class="pours">
           <div class="pour-header">${t(UI.recipe)} · ${t(m.temp)}</div>
