@@ -7,7 +7,7 @@
 <meta name="theme-color" content="#0f0f12">
 <title>Кофе / Coffee</title>
 <link rel="stylesheet" href="style.css">
-<style>:root{--accent:#9b928a;--br:#9b928a;--br-dim:rgba(155,146,138,.25);--br-bg:rgba(155,146,138,.08)}</style>
+<style>:root{--accent:#9b928a}</style>
 </head>
 <body>
 
@@ -30,6 +30,7 @@
 </div>
 <div class="methods" id="methods"></div>
 
+<script src="icons.js"></script>
 <script>
 let lang=localStorage.getItem('lang')||'ru';
 function setLang(l){lang=l;localStorage.setItem('lang',l);render();updateURL();}
@@ -43,13 +44,7 @@ const UI={
   grind:{ru:"Помол",en:"Grind"},
 };
 
-const METHOD_ICONS={
-  chemex:`<svg viewBox="0 0 24 24"><path d="M9 3h6"/><path d="M9 3l3 8-3 10h8l-3-10 3-8"/><path d="M6 21h12"/><path d="M10 11h4"/></svg>`,
-  v60:`<svg viewBox="0 0 24 24"><path d="M6 4h12"/><path d="M8 4l4 14 4-14"/><path d="M12 18v3"/></svg>`,
-  "aero-filter":`<svg viewBox="0 0 24 24"><path d="M8 7h8v12H8z"/><path d="M12 3v4"/><path d="M9 3h6"/><path d="M12 19v3"/></svg>`,
-  "aero-espresso":`<svg viewBox="0 0 24 24"><path d="M8 7h8v12H8z"/><path d="M12 3v4"/><path d="M9 3h6"/><path d="M5 13l2 1"/><path d="M5 16l2 1"/></svg>`,
-  "aero-cold":`<svg viewBox="0 0 24 24"><path d="M8 7h8v12H8z"/><path d="M12 3v4"/><path d="M9 3h6"/><path d="M12 19v3"/><path d="M4 13v3"/><path d="M3 14.5h2"/></svg>`
-};
+function coffeeIcon(id){return ICONS.coffee[id]||(id.startsWith('aero')?ICONS.coffee.aeropress:null)||ICONS.coffee.chemex;}
 
 const M=[
   {
@@ -153,7 +148,7 @@ function updateBrewRing(id){
     const ring=el.querySelector('.timer-ring');
     const inner=el.querySelector('.timer-inner');
     const hint=el.querySelector('.timer-hint');
-    ring.style.background=`conic-gradient(${done?'var(--vegan)':'var(--br,var(--accent))'} ${pct}%, rgba(255,255,255,0.1) ${pct}%)`;
+    ring.style.background=`conic-gradient(${done?'var(--vegan)':'var(--accent)'} ${pct}%, rgba(255,255,255,0.1) ${pct}%)`;
     inner.style.color=done?'var(--vegan)':'var(--text)';
     inner.textContent=done?'\u2713':fmtTime(b.elapsed);
     hint.textContent=done?(lang==='ru'?'готово — нажми для сброса':'done — tap to reset'):b.iv?(lang==='ru'?'пауза':'tap to pause'):(lang==='ru'?'старт':'tap to start');
@@ -179,7 +174,7 @@ function render(){
     let total=0;
     return `<div class="method${isOpen?' open':''}" id="m-${m.id}">
       <div class="m-top" onclick="toggle('${m.id}')">
-        <div class="m-emoji">${METHOD_ICONS[m.id]||''}</div>
+        <div class="m-emoji">${coffeeIcon(m.id)}</div>
         <div class="m-body">
           <div class="m-name">${m.name}</div>
           <div class="m-style">${m.style}</div>
@@ -205,7 +200,7 @@ function render(){
         </div>
         <div class="brew-timer" id="brew-${m.id}">
           <span class="brew-timer-label">${lang==='ru'?'Таймер':'Timer'}</span>
-          <div class="timer-ring" onclick="toggleBrew('${m.id}')" style="background:conic-gradient(var(--br,var(--accent)) 0%, rgba(255,255,255,0.1) 0%)">
+          <div class="timer-ring" onclick="toggleBrew('${m.id}')" style="background:conic-gradient(var(--accent) 0%, rgba(255,255,255,0.1) 0%)">
             <div class="timer-inner" style="color:${brewTimers[m.id]?.done?'var(--vegan)':'var(--text)'}">${brewTimers[m.id]?fmtTime(brewTimers[m.id].elapsed):'0:00'}</div>
           </div>
           <span class="timer-hint">${brewTimers[m.id]?.done?(lang==='ru'?'готово — нажми для сброса':'done — tap to reset'):brewTimers[m.id]?.iv?(lang==='ru'?'пауза':'tap to pause'):(lang==='ru'?'старт':'tap to start')}</span>

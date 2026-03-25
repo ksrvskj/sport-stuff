@@ -129,6 +129,9 @@ One icon per category (not per recipe). New recipe inherits category icon.
 
 All: `viewBox="0 0 24 24"`, stroke only, same weight as hub icons.
 
+All icons are centralized in `icons.js` — accessed via `ICONS.cat.soup`, `ICONS.coffee.chemex`, `ICONS.tier.moon`, etc.
+Use `iconInner(svg)` helper to extract inner SVG content when wrapper `<svg>` already exists.
+
 ### Icon Sizing
 | Context         | Container | SVG size |
 |----------------|-----------|----------|
@@ -304,6 +307,7 @@ When scaling portions, amounts are rounded context-aware:
 personal-tools/
   DESIGN.md        <- this file
   style.css        <- design system + all page CSS (shared)
+  icons.js         <- all SVG icons (ICONS.hub/cat/coffee/tier/tag/ui + iconInner helper)
   index.html       <- hub dashboard (links style.css + hub-specific inline)
   workout.html     <- morning routine
   recipes.html     <- batch cooking (browse + cook mode)
@@ -311,6 +315,7 @@ personal-tools/
 ```
 
 Each page: `<link rel="stylesheet" href="style.css">` + inline `<style>` only for `:root` variable overrides.
+Each page (except hub): `<script src="icons.js"></script>` before the main `<script>` block.
 
 Hub is the exception: it links style.css for shared base (body, noise, fonts) but keeps bento grid / hero card styles inline (hub-specific layout).
 

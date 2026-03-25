@@ -23,17 +23,17 @@
 
 <div class="tiers">
   <button class="tier-btn active-min" data-tier="min" onclick="switchTier('min')">
-    <div class="tier-emoji"><svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg></div>
+    <div class="tier-emoji" id="tier-icon-min"></div>
     <div>Just Show Up</div>
     <div class="tier-time">~10 min</div>
   </button>
   <button class="tier-btn" data-tier="regular" onclick="switchTier('regular')">
-    <div class="tier-emoji"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg></div>
+    <div class="tier-emoji" id="tier-icon-regular"></div>
     <div>Regular</div>
     <div class="tier-time">~22 min</div>
   </button>
   <button class="tier-btn" data-tier="full" onclick="switchTier('full')">
-    <div class="tier-emoji"><svg viewBox="0 0 24 24"><path d="M13 2L3 14h8l-1 8 10-12h-8z"/></svg></div>
+    <div class="tier-emoji" id="tier-icon-full"></div>
     <div>Full Pack</div>
     <div class="tier-time">~38 min</div>
   </button>
@@ -45,6 +45,7 @@
   <div>↻ Tap swap to switch exercises · Tap ○ to mark done</div>
 </div>
 
+<script src="icons.js"></script>
 <script>
 const EXERCISES={core:[{id:"dead-bugs",name:"Dead Bugs",sets:"2×8 each side",time:null,cue:"Press lower back into the floor. Extend opposite arm and leg slowly. If your back arches, you've gone too far.",category:"core",svg:"dead-bugs"},{id:"bird-dogs",name:"Bird Dogs",sets:"2×8 each side",time:null,cue:"Tabletop position. Extend opposite arm and leg, keep hips level — imagine a cup of coffee on your lower back.",category:"core",svg:"bird-dogs"},{id:"front-plank",name:"Front Plank",sets:"1×",time:40,cue:"Forearms on the floor, body straight. Squeeze glutes, pull belly button in. Don't let hips sag or pike up.",category:"core",svg:"plank"},{id:"side-plank",name:"Side Plank",sets:"2× (each side)",time:30,cue:"Stack feet or stagger them. Lift hips until body is straight. Top hand on hip or reaching up. Breathe!",category:"core",svg:"side-plank"},{id:"hollow-hold",name:"Hollow Body Hold",sets:"3×",time:20,cue:"Lie flat, press lower back down. Lift shoulders and legs slightly off the ground. Arms by ears or by sides if too hard.",category:"core",svg:"hollow-hold"},{id:"leg-raises",name:"Bent-Knee Leg Raises",sets:"3×10",time:null,cue:"Lie flat, hands under hips for back support. Lift bent knees to chest, lower slowly. Keep lower back pressed down.",category:"core",svg:"leg-raises"},{id:"bear-hold",name:"Bear Crawl Hold",sets:"3×",time:20,cue:"Tabletop position, lift knees 2cm off the ground. Hold. Breathe. Harder than it looks.",category:"core",svg:"bear-hold"},{id:"dead-bug-reach",name:"Dead Bug Reaches",sets:"2×10 each side",time:null,cue:"Like dead bugs but both arms start overhead. Reach opposite arm to opposite knee while extending the other leg.",category:"core",svg:"dead-bugs"}],glutes:[{id:"glute-bridge",name:"Glute Bridges",sets:"2×12",time:null,cue:"Feet flat, hip-width. Drive through heels, squeeze glutes at the top. Pause 1 second up top.",category:"glutes",svg:"glute-bridge"},{id:"sl-glute-bridge",name:"Single Leg Glute Bridge",sets:"2×10 each side",time:null,cue:"One foot planted, other leg extended or knee to chest. Drive through the planted heel. Keep hips level.",category:"glutes",svg:"sl-glute-bridge"},{id:"clamshells",name:"Clamshells",sets:"2×12 each side",time:null,cue:"Side-lying, knees bent 90°. Open top knee like a clamshell, keep feet together. Don't roll your hips back.",category:"glutes",svg:"clamshell"},{id:"fire-hydrants",name:"Fire Hydrants",sets:"2×12 each side",time:null,cue:"Tabletop position. Lift knee out to the side, keeping 90° bend. Control the movement — no swinging.",category:"glutes",svg:"fire-hydrant"},{id:"donkey-kicks",name:"Donkey Kicks",sets:"2×12 each side",time:null,cue:"Tabletop, push one foot toward the ceiling. Keep knee bent 90°. Squeeze at the top, don't arch your back.",category:"glutes",svg:"donkey-kick"},{id:"hip-thrust",name:"Hip Thrusts (Elevated)",sets:"2×12",time:null,cue:"Upper back on bed/couch edge. Feet flat on floor. Drive hips up until thighs are parallel. Squeeze hard at the top.",category:"glutes",svg:"hip-thrust"}],upper:[{id:"push-ups",name:"Push-Ups",sets:"2×8–12",time:null,cue:"Hands under shoulders, core tight. Lower chest to floor, push back up. On knees is fine — full range of motion > half reps.",category:"upper",svg:"push-up"},{id:"pike-push-ups",name:"Pike Push-Ups",sets:"2×8",time:null,cue:"Inverted V position, hands shoulder width. Bend elbows, lower head toward floor. Great for shoulders.",category:"upper",svg:"pike-push-up"},{id:"scap-push-ups",name:"Scapular Push-Ups",sets:"2×10",time:null,cue:"Plank position, arms straight. Let shoulder blades pinch together, then push them apart. Arms stay locked.",category:"upper",svg:"scap-push-up"},{id:"superman",name:"Superman (Gentle)",sets:"2×8",time:null,cue:"Lie face down. Lift arms and legs just a few cm — you don't need a huge range. Hold 2 sec at top. Go easy with your back.",category:"upper",svg:"superman"},{id:"tricep-dips",name:"Tricep Dips (Chair/Bed)",sets:"2×10",time:null,cue:"Hands on edge behind you, legs extended or bent. Lower until elbows hit ~90°, push back up.",category:"upper",svg:"tricep-dip"}],mobility:[{id:"cat-cow",name:"Cat-Cow",sets:"",time:60,cue:"Tabletop. Inhale: drop belly, look up (cow). Exhale: round spine, tuck chin (cat). Slow and fluid.",category:"mobility",svg:"cat-cow"},{id:"hip-flexor",name:"Hip Flexor Stretch",sets:"30s each side",time:30,cue:"Kneeling lunge. Push hips forward gently, feel the stretch in front of the back leg's hip. Don't arch your lower back.",category:"mobility",svg:"hip-flexor"},{id:"90-90",name:"90/90 Hip Stretch",sets:"30s each side",time:30,cue:"Sit with both knees at 90°, front and back. Lean forward over the front leg. Switch sides.",category:"mobility",svg:"ninety-ninety"},{id:"thoracic-rotation",name:"Thoracic Rotation",sets:"8 each side",time:null,cue:"Side-lying, knees stacked and bent. Open top arm to the other side like opening a book. Follow with your eyes.",category:"mobility",svg:"thoracic"},{id:"worlds-greatest",name:"World's Greatest Stretch",sets:"5 each side",time:null,cue:"Deep lunge, plant inside hand, rotate and reach other arm to ceiling. Combines hip, thoracic, and hamstring stretch in one.",category:"mobility",svg:"worlds-greatest"},{id:"pigeon",name:"Pigeon Pose",sets:"45s each side",time:45,cue:"Front shin across the mat, back leg extended. Fold forward gently. Amazing for tight hips from running.",category:"mobility",svg:"pigeon"},{id:"figure-four",name:"Figure-4 Stretch",sets:"30s each side",time:30,cue:"Lie on back, cross one ankle over opposite knee. Pull the bottom leg toward chest. Gentle on the back.",category:"mobility",svg:"figure-four"}]};
 
@@ -249,6 +250,9 @@ function updateURL(){
   history.replaceState(null,'',qs?'?'+qs:location.pathname);
 }
 
+document.getElementById('tier-icon-min').innerHTML=ICONS.tier.moon;
+document.getElementById('tier-icon-regular').innerHTML=ICONS.tier.sun;
+document.getElementById('tier-icon-full').innerHTML=ICONS.tier.lightning;
 if(!readURL()) render();
 </script>
 </body>
