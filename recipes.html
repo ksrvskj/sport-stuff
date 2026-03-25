@@ -18,8 +18,8 @@
     <div class="header-desc" id="hDesc"></div>
     <div class="header-links"><a class="header-link" href="index.html">← Hub</a><a class="header-link" href="coffee.html"><span id="hCoffee"></span></a></div>
   </div><div class="lang-toggle"><button class="lang-btn" onclick="setLang('ru')">RU</button><button class="lang-btn" onclick="setLang('en')">EN</button></div></div></div>
-  <div class="filters" id="catBar"></div>
-  <div class="filters" id="subBar"></div>
+  <div class="cat-bar" id="catBar"></div>
+  <div class="sub-bar" id="subBar"></div>
   <div class="tag-filters" id="tagBar"></div>
   <div class="ing-row" id="ingBar"></div>
   <div class="cards" id="cardList"></div>
@@ -112,18 +112,17 @@ function fullRender(){
 }
 
 function renderBrowse(){
-  // Top-level categories
+  // Top-level categories — icon only, label under active
   document.getElementById('catBar').innerHTML=TOP_CATS.map(c=>{
     const icon=ICONS.cat[c.id]||'';
-    const arrow=c.id==='batch'?`<span class="batch-arrow${batchOpen&&curTop==='batch'?' open':''}">\u203A</span>`:'';
-    return`<button class="fbtn${curTop===c.id?' active':''}" style="--c:${c.color}" onclick="setTop('${c.id}')">${icon}${t(c.label)}${arrow}</button>`;
+    return`<button class="cat-btn${curTop===c.id?' active':''}" style="--c:${c.color}" onclick="setTop('${c.id}')">${icon}<span class="cat-label">${t(c.label)}</span></button>`;
   }).join('');
 
-  // Subcategories (only when batch selected + expanded)
+  // Subcategories — text only, when batch selected + expanded
   const subBar=document.getElementById('subBar');
   if(curTop==='batch'&&batchOpen){
-    subBar.innerHTML=`<button class="fbtn${curSub===null?' active':''}" style="--c:${getTopColor('batch')}" onclick="setSub(null)">${lang==='ru'?'Всё':'All'}</button>`+SUB_CATS.map(s=>
-      `<button class="fbtn${curSub===s.id?' active':''}" style="--c:${getTopColor('batch')}" onclick="setSub('${s.id}')">${ICONS.cat[s.id]||''}${t(s.label)}</button>`
+    subBar.innerHTML=`<button class="sub-btn${curSub===null?' active':''}" style="--c:${getTopColor('batch')}" onclick="setSub(null)">${lang==='ru'?'Всё':'All'}</button>`+SUB_CATS.map(s=>
+      `<button class="sub-btn${curSub===s.id?' active':''}" style="--c:${getTopColor('batch')}" onclick="setSub('${s.id}')">${t(s.label)}</button>`
     ).join('');
     subBar.style.display='';
   } else {
