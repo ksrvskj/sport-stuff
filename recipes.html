@@ -115,7 +115,8 @@ function renderBrowse(){
   // Top-level categories — icon only, label under active
   document.getElementById('catBar').innerHTML=TOP_CATS.map(c=>{
     const icon=ICONS.cat[c.id]||'';
-    return`<button class="cat-btn${curTop===c.id?' active':''}" style="--c:${c.color}" onclick="setTop('${c.id}')">${icon}<span class="cat-label">${t(c.label)}</span></button>`;
+    const arrow=c.id==='batch'?`<span class="cat-expand${batchOpen&&curTop==='batch'?' open':''}">\u203A</span>`:'';
+    return`<button class="cat-btn${curTop===c.id?' active':''}" style="--c:${c.color}" onclick="setTop('${c.id}')">${icon}${arrow}<span class="cat-label">${t(c.label)}</span></button>`;
   }).join('');
 
   // Subcategories — text only, when batch selected + expanded
@@ -175,7 +176,7 @@ function updateTmRing(key){const el=document.getElementById('timer-'+key);if(!el
 function renderCook(){
   const r=R.find(x=>x.id===cookId);if(!r)return;const p=gp(r),c=gc(r.cat);
   let h=`<div style="--c:${c}">`;
-  h+=`<div class="cook-hero"><div class="card-icon" style="--c:${c};width:42px;height:42px;border-radius:12px"><svg viewBox="0 0 24 24" style="width:22px;height:22px;stroke:${c};stroke-width:1.5;fill:none;stroke-linecap:round;stroke-linejoin:round">${iconInner(catIcon(r.cat))}</svg></div><div class="cook-title">${t(r.name)}</div>${r.sub?`<div class="cook-subtitle">${t(r.sub)}</div>`:''}<button id="shareBtn" class="share-btn" style="--c:${c}" onclick="event.stopPropagation();shareRecipe()">↗ ${t(UI.share)}</button></div>`;
+  h+=`<div class="cook-hero"><div class="card-icon" style="--c:${c};width:42px;height:42px;border-radius:12px"><svg viewBox="0 0 24 24" style="width:22px;height:22px;stroke:${c};stroke-width:1.5;fill:none;stroke-linecap:round;stroke-linejoin:round">${iconInner(catIcon(r.cat))}</svg></div><div class="cook-title">${t(r.name)}</div>${r.sub?`<div class="cook-subtitle">${t(r.sub)}</div>`:''}<button id="shareBtn" class="share-btn" style="--c:${c}" onclick="event.stopPropagation();shareRecipe()">${ICONS.ui.share} ${t(UI.share)}</button></div>`;
   h+=`<div class="cook-portions"><label>${t(UI.portions)}</label><div class="stepper" style="--c:${c}"><button class="stepper-btn" onclick="event.stopPropagation();adjP('${r.id}',-1)">−</button><input class="stepper-val" type="number" min="1" max="12" value="${p}" onclick="event.stopPropagation();this.select()" onchange="event.stopPropagation();setP('${r.id}',+this.value)" onkeydown="if(event.key==='Enter'){this.blur()}"><button class="stepper-btn" onclick="event.stopPropagation();adjP('${r.id}',1)">+</button></div><span style="font-size:11px;opacity:.3;margin-left:4px">${UI.pWord(p)}</span></div>`;
   h+=`<div class="cook-ing"><div class="cook-ing-title">${t(UI.ingredients)} · ${p} ${UI.pWord(p)}</div><div class="cook-ing-list">${r.ing.map(i=>`<div class="ci">${t(i.t)} <span class="ci-a">${fmtIng(i,r.bp,p)}</span>${i.pp?` /${lang==='ru'?'порц':'serv'}`:''}</div>`).join('')}</div></div>`;
   h+=`<div class="cook-steps">`;
