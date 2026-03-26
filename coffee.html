@@ -19,7 +19,6 @@
       <div class="header-desc">Chemex · V60 · Aeropress · Cold Brew</div>
       <div class="header-links">
         <a class="header-link" href="index.html">← Hub</a>
-        <a class="header-link" href="recipes.html" id="hRecipes">Рецепты</a>
       </div>
     </div>
     <div class="lang-toggle">
@@ -166,7 +165,6 @@ function updateBrewRing(id){
 
 function render(){
   document.getElementById('hTitle').textContent=t(UI.title);
-  document.getElementById('hRecipes').textContent=t(UI.recipes);
   document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.textContent.toLowerCase()===lang));
 
   document.getElementById('methods').innerHTML=M.map((m,idx)=>{

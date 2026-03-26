@@ -50,14 +50,18 @@ Each page sets `--accent` in inline `<style>`:
 - Workout: `--accent: var(--cool)` (`#7fa693`)
 - Coffee: `--accent: var(--neutral)` (`#9b928a`)
 
-### Recipe Category Colors (derived from accents)
-| Category | Token       | Hex       | Character                |
-|----------|------------|-----------|--------------------------|
-| Soup     | `--soup`   | `#c9a87e` | Warm gold                |
-| Curry    | `--curry`  | `#7fa693` | Sage green               |
-| Pasta    | `--pasta`  | `#b49ac4` | Soft lavender            |
-| Skillet  | `--skillet`| `#7faab4` | Muted teal               |
-| Comfort  | `--comfort`| `#c4917e` | Dusty coral              |
+### Recipe Category Colors
+| Category     | Token         | Hex       | Character    |
+|-------------|--------------|-----------|--------------|
+| Batch       | `--batch`     | `#c9a87e` | Warm gold    |
+| Breakfast   | `--breakfast` | `#c4917e` | Dusty coral  |
+| Grains      | `--grains`    | `#9b928a` | Neutral      |
+| Fermentation| `--ferment`   | `#7fa693` | Sage green   |
+| Baking      | `--baking`    | `#b49ac4` | Soft lavender|
+| Slow        | `--slow`      | `#7faab4` | Muted teal   |
+
+Subcategories (soup, curry, pasta, skillet) inherit `--batch` color.
+Legacy tokens `--soup`, `--curry`, `--pasta`, `--skillet` still exist for backwards compat.
 
 ### Dietary Tags
 | Tag      | Color       | Matches            |
@@ -116,29 +120,57 @@ Each page sets `--accent` in inline `<style>`:
 | Recipes | Pot with steam      | `--warm` |
 | Coffee  | Cup with handle     | `--neutral` |
 
-### Recipe Categories — 5 SVG Icons
-One icon per category (not per recipe). New recipe inherits category icon.
+### Recipe Categories — 6 Top-Level + 4 Subcategories
 
-| Category | Icon              |
-|----------|-------------------|
-| Soup     | Pot + steam lines |
-| Curry    | Dome bowl         |
-| Pasta    | Barrel/vessel     |
-| Skillet  | Pan + steam       |
-| Comfort  | Star              |
+Hierarchical architecture: 6 top-level categories, "Batch" expands to show 4 subcategories.
+
+**Top-level categories** (`TOP_CATS`, icon-only buttons 44×44px):
+| Category     | Icon                         | Color token     | Hex       |
+|-------------|------------------------------|-----------------|-----------|
+| Batch       | Pot + steam (`cat.batch`)     | `--batch`       | `#c9a87e` |
+| Breakfast   | Muesli bowl + yoghurt carton (`cat.breakfast`) | `--breakfast` | `#c4917e` |
+| Grains      | Saucepan + grain dots (`cat.grains`) | `--grains` | `#9b928a` |
+| Fermentation| Jar + pickles (`cat.ferment`) | `--ferment`     | `#7fa693` |
+| Baking      | Whisk + rolling pin (`cat.baking`) | `--baking` | `#b49ac4` |
+| Slow        | Cloche dome (`cat.slow`)      | `--slow`        | `#7faab4` |
+
+**Batch subcategories** (`SUB_CATS`, text-only buttons):
+| Subcategory | Icon (cards only)             | Inherits color from |
+|-------------|-------------------------------|---------------------|
+| Soups       | Pot + steam (`cat.soup`)       | Batch (`--batch`)   |
+| Curry       | Bowl + spices (`cat.curry`)    | Batch               |
+| Pasta       | Pasta strands (`cat.pasta`)    | Batch               |
+| Skillet     | Pan + steam (`cat.skillet`)    | Batch               |
+
+**Dietary tag icons** (5 tags, shown after text label):
+| Tag      | Icon                  | Color token  |
+|----------|----------------------|-------------|
+| Vegan    | Leaf (`tag.vegan`)    | `--vegan`   |
+| GF       | Wheat slash (`tag.gf`)| `--gf`      |
+| Fast     | Clock (`tag.fast`)    | `--fast`    |
+| Protein  | Barbell (`tag.protein`)| `--hprot`  |
+| Comfort  | Heart (`tag.comfort`) | `--comfort` |
 
 All: `viewBox="0 0 24 24"`, stroke only, same weight as hub icons.
 
-All icons are centralized in `icons.js` — accessed via `ICONS.cat.soup`, `ICONS.coffee.chemex`, `ICONS.tier.moon`, etc.
+### Navigation — 3 visual levels
+1. **Icon-only category buttons** (`.cat-btn`, 44×44px) — label appears only under active button
+2. **Text-only subcategory buttons** (`.sub-btn`) — shown when Batch is active and expanded
+3. **Tag filter pills** (`.tbtn`) — text + small icon, toggleable
+
+Batch button toggles expand/collapse on re-click (`.cat-expand` arrow indicator).
+
+All icons centralized in `icons.js` — accessed via `ICONS.cat.soup`, `ICONS.coffee.chemex`, `ICONS.tier.moon`, `ICONS.tag.vegan`, etc.
 Use `iconInner(svg)` helper to extract inner SVG content when wrapper `<svg>` already exists.
 
 ### Icon Sizing
-| Context         | Container | SVG size |
-|----------------|-----------|----------|
-| Hub hero card  | 44x44px   | 22x22px  |
-| Hub small card | 34x34px   | 17x17px  |
-| Recipe card    | 34x34px   | 18x18px  |
-| Cook mode hero | 42x42px   | 22x22px  |
+| Context            | Container | SVG size |
+|-------------------|-----------|----------|
+| Hub hero card     | 44x44px   | 22x22px  |
+| Hub small card    | 34x34px   | 17x17px  |
+| Category buttons  | 44x44px   | 22x22px  |
+| Recipe card       | 34x34px   | 18x18px  |
+| Cook mode hero    | 42x42px   | 22x22px  |
 
 ### No Emoji
 Emoji are device-dependent and visually inconsistent with line-icon aesthetic. Exception: dietary tags in filter pills — these are functional labels, not decorative.

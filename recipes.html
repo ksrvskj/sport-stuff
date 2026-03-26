@@ -16,7 +16,7 @@
     <div class="header-sub">Batch Cooking</div>
     <h1 id="hTitle"></h1>
     <div class="header-desc" id="hDesc"></div>
-    <div class="header-links"><a class="header-link" href="index.html">← Hub</a><a class="header-link" href="coffee.html"><span id="hCoffee"></span></a></div>
+    <div class="header-links"><a class="header-link" href="index.html">← Hub</a></div>
   </div><div class="lang-toggle"><button class="lang-btn" onclick="setLang('ru')">RU</button><button class="lang-btn" onclick="setLang('en')">EN</button></div></div></div>
   <div class="cat-bar" id="catBar"></div>
   <div class="sub-bar" id="subBar"></div>
@@ -106,7 +106,7 @@ function toggleNutrition(){hideNutrition=!hideNutrition;localStorage.setItem('hi
 function applyNutrition(){document.body.classList.toggle('hide-nutrition',hideNutrition);const nt=document.getElementById('nutToggle');nt?.classList.toggle('off',hideNutrition);const nl=document.getElementById('nutLabel');if(nl)nl.textContent=hideNutrition?'×':'ⓘ';}
 
 function fullRender(){
-  document.getElementById('hTitle').textContent=t(UI.title);document.getElementById('hDesc').textContent=t(UI.desc);document.getElementById('hCoffee').textContent=t(UI.coffee);document.getElementById('cookBackLabel').textContent=t(UI.back);
+  document.getElementById('hTitle').textContent=t(UI.title);document.getElementById('hDesc').textContent=t(UI.desc);document.getElementById('cookBackLabel').textContent=t(UI.back);
   document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.textContent.toLowerCase()===lang));
   applyNutrition();renderBrowse();if(cookId)renderCook();
 }
@@ -132,7 +132,7 @@ function renderBrowse(){
   }
 
   // Tags
-  let tagHtml=TAGS.map(tg=>`<button class="tbtn${activeTags.has(tg.id)?' on':''}" style="--c:${tg.color}" onclick="toggleTag('${tg.id}')">${TAG_ICON[tg.id]||''}${t(tg.label)}</button>`).join('');
+  let tagHtml=TAGS.map(tg=>`<button class="tbtn${activeTags.has(tg.id)?' on':''}" style="--c:${tg.color}" onclick="toggleTag('${tg.id}')">${t(tg.label)}${TAG_ICON[tg.id]||''}</button>`).join('');
   const ingCount=activeIngs.size;
   tagHtml+=`<button class="ing-toggle${ingOpen?' open':''}${ingCount>0?' has-active':''}" onclick="toggleIngPanel()">${ingCount>0?`${t(UI.ingFilterN)} (${ingCount})`:t(UI.ingFilter)}</button>`;
   document.getElementById('tagBar').innerHTML=tagHtml;
@@ -154,7 +154,7 @@ function renderBrowse(){
   const list=document.getElementById('cardList');
   if(!items.length){list.innerHTML=`<div class="nothing">${t(UI.noMatch)}</div>`;return;}
   list.innerHTML=items.map((r,idx)=>{const c=gc(r.cat),isOpen=openCard===r.id;
-    return`<div class="card${isOpen?' open':''}" style="--c:${c}" onclick="toggleCard('${r.id}')"><div class="card-top"><div class="card-icon" style="--c:${c}">${catIcon(r.cat)}</div><div class="card-body"><div class="card-name">${t(r.name)}</div>${r.sub?`<div class="card-sub">${t(r.sub)}</div>`:''}<div class="card-row"><span class="card-meta">${t(r.time)}</span><span class="card-meta">${r.bp} ${UI.pWord(r.bp)}</span><span class="card-protein">${ICONS.tag.protein}${r.kbju[1]}${lang==='ru'?'г':'g'}</span>${r.tags.map(tg=>`<span class="card-tag tag-${tg}">${TAG_ICON[tg]||''}${tg==='vegan'?'V':tg==='gf'?'GF':tg==='fast'?'<15':tg==='hprot'?(lang==='ru'?'Б':'P'):tg==='comfort'?'':tg}</span>`).join('')}</div></div></div>${isOpen?`<div class="card-preview" onclick="event.stopPropagation()"><div class="card-preview-list">${r.ing.map(i=>`${t(i.t)}${t(i.u)?' · '+fmtIng(i,r.bp,r.bp):''}`).join('<br>')}</div><button class="card-cook" style="--c:${c}" onclick="event.stopPropagation();enterCook('${r.id}')">${t(UI.cook)}</button></div>`:''}</div>`;
+    return`<div class="card${isOpen?' open':''}" style="--c:${c}" onclick="toggleCard('${r.id}')"><div class="card-top"><div class="card-icon" style="--c:${c}">${catIcon(r.cat)}</div><div class="card-body"><div class="card-name">${t(r.name)}</div>${r.sub?`<div class="card-sub">${t(r.sub)}</div>`:''}<div class="card-row"><span class="card-meta">${t(r.time)}</span><span class="card-meta">${r.bp} ${UI.pWord(r.bp)}</span><span class="card-protein">${ICONS.tag.protein}${r.kbju[1]}${lang==='ru'?'г':'g'}</span>${r.tags.map(tg=>`<span class="card-tag tag-${tg}">${tg==='vegan'?'V':tg==='gf'?'GF':tg==='fast'?'<15':tg==='hprot'?(lang==='ru'?'Б':'P'):tg==='comfort'?'':tg}${TAG_ICON[tg]||''}</span>`).join('')}</div></div></div>${isOpen?`<div class="card-preview" onclick="event.stopPropagation()"><div class="card-preview-list">${r.ing.map(i=>`${t(i.t)}${t(i.u)?' · '+fmtIng(i,r.bp,r.bp):''}`).join('<br>')}</div><button class="card-cook" style="--c:${c}" onclick="event.stopPropagation();enterCook('${r.id}')">${t(UI.cook)}</button></div>`:''}</div>`;
   }).join('');
 }
 
