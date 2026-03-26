@@ -17,7 +17,8 @@ const ICONS = {
   hub: {
     workout: `<svg viewBox="0 0 24 24"><circle cx="12" cy="3.5" r="2"/><path d="M7 8h10"/><path d="M12 8v6"/><path d="M8 21l4-7 4 7"/><path d="M7 8l-2-3"/><path d="M17 8l2-3"/></svg>`,
     recipes: `<svg viewBox="0 0 24 24"><path d="M4 11h16v7a3 3 0 01-3 3H7a3 3 0 01-3-3v-7z"/><path d="M2 11h20"/><path d="M8 4c0 2 2 3 0 5"/><path d="M12 3c0 2 2 3 0 5"/><path d="M16 4c0 2 2 3 0 5"/></svg>`,
-    coffee: `<svg viewBox="0 0 24 24"><path d="M5 9h12v8a3 3 0 01-3 3H8a3 3 0 01-3-3V9z"/><path d="M17 11h1.5a2.5 2.5 0 010 5H17"/><path d="M8 5c0-1 .5-2 1.5-2"/><path d="M12 5c0-1 .5-2 1.5-2"/></svg>`
+    coffee: `<svg viewBox="0 0 24 24"><path d="M5 9h12v8a3 3 0 01-3 3H8a3 3 0 01-3-3V9z"/><path d="M17 11h1.5a2.5 2.5 0 010 5H17"/><path d="M8 5c0-1 .5-2 1.5-2"/><path d="M12 5c0-1 .5-2 1.5-2"/></svg>`,
+    dutch: `<svg viewBox="0 0 24 24"><path d="M2 5v15c4-2 8-2 10 0V5C10 3 6 3 2 5z"/><path d="M12 5v15c2-2 6-2 10 0V5c-2-2-6-2-10 0"/></svg>`
   },
 
   // ===== RECIPE CATEGORIES =====

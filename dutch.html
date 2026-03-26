@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#faf7f2">
+<title>Nederlands — Справочник</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="dutch.css">
+</head>
+<body>
+
+<!-- INDEX VIEW -->
+<div id="indexView">
+  <div class="topbar">
+    <a class="back-btn" href="index.html"><svg viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7"/></svg><span>Hub</span></a>
+    <div class="topbar-title"></div>
+    <div class="topbar-right"><div class="lang-toggle"><button class="lang-btn" onclick="setLang('ru')">RU</button><button class="lang-btn" onclick="setLang('en')">EN</button></div></div>
+  </div>
+  <div class="idx-header">
+    <div class="idx-logo">Grammatica</div>
+    <div class="idx-title" id="idxTitle"></div>
+    <div class="idx-sub" id="idxSub"></div>
+  </div>
+  <div class="idx-blocks" id="idxBlocks"></div>
+</div>
+
+<!-- GUIDE VIEW -->
+<div id="guideView">
+  <div class="topbar">
+    <div class="back-btn" onclick="exitGuide()"><svg viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7"/></svg></div>
+    <div class="topbar-title"><div class="topbar-sub" id="topSub"></div><div class="topbar-main" id="topMain"></div></div>
+    <div class="topbar-right"><div class="lang-toggle"><button class="lang-btn" onclick="setLang('ru')">RU</button><button class="lang-btn" onclick="setLang('en')">EN</button></div></div>
+  </div>
+  <div class="guide-header" id="guideHeader"></div>
+  <div id="summaryCard"></div>
+  <div class="content" id="guideContent"></div>
+</div>
+
+<div class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+  <svg viewBox="0 0 24 24"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg>
+</div>
+
+<script src="dutch-data.js"></script>
+<script>
+/* ========== STATE ========== */
+let lang=localStorage.getItem('lang')||'ru',activeGuide=null;
+function setLang(l){lang=l;localStorage.setItem('lang',l);render();updateURL();}
+function t(o){if(!o)return'';if(typeof o==='string')return o;return o[lang]||o.ru||o.en||'';}
+
+/* ========== RENDERING ========== */
+function renderIndex(){
+  document.getElementById('idxTitle').textContent='Nederlands';
+  const gc=BLOCKS.reduce((n,b)=>n+b.guides.length,0);
+  document.getElementById('idxSub').textContent=lang==='ru'?`Справочник · A1→B1 · ${gc} разделов`:`Reference · A1→B1 · ${gc} guides`;
+  let ci=0;
+  document.getElementById('idxBlocks').innerHTML=BLOCKS.map(b=>`<div class="idx-block"><div class="idx-block-name" style="color:${b.color}"><span class="idx-block-icon" style="color:${b.color}">${BLOCK_ICONS[b.id]}</span>${t(b.name)}</div>${b.guides.map(g=>`<div class="idx-card" style="--c:${b.color};animation-delay:${(ci++)*0.04}s" onclick="openGuide('${g.id}')"><div class="idx-card-body"><div class="idx-card-title">${t(g.title)}</div><div class="idx-card-sub">${g.sub}</div></div><div class="idx-card-level" style="--c:${b.color}">${g.level}</div><div class="idx-card-arrow"><svg viewBox="0 0 24 24" width="12" height="12"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>`).join('')}</div>`).join('');
+}
+
+function renderGuide(){
+  const guide=GUIDES[activeGuide],info=getBlockForGuide(activeGuide);
+  if(!guide||!info){document.getElementById('guideHeader').innerHTML='<div class="stub">Guide not found</div>';return;}
+
+  document.documentElement.style.setProperty('--accent',info.block.color);
+  document.getElementById('topSub').textContent=t(info.block.name);
+  document.getElementById('topMain').textContent=t(guide.title);
+
+  document.getElementById('guideHeader').innerHTML=`
+    <div class="guide-block-label">${BLOCK_ICONS[info.block.id]} ${t(info.block.name)}</div>
+    <div class="guide-title">${t(guide.title)}</div>
+    <div class="guide-subtitle">${guide.subtitle}</div>
+    <div class="guide-level">${guide.level}</div>`;
+
+  // Summary + TOC
+  const items=guide.summary(lang);
+  const tocLinks=guide.sections.map(s=>`<a href="#" onclick="event.preventDefault();document.getElementById('s-${s.id}').scrollIntoView({behavior:'smooth',block:'start'})">${t(s.title)}</a>`).join('<span class="dot">·</span>');
+  const showToc=guide.sections.length>=5;
+  document.getElementById('summaryCard').innerHTML=`<div class="summary">
+    <div class="summary-label">${lang==='ru'?'Шпаргалка':'Summary'}</div>
+    ${items.map(s=>`<div class="summary-rule">${s}</div>`).join('')}
+    ${showToc?`<hr class="summary-divider"><div class="summary-toc-label">${lang==='ru'?'Содержание':'Contents'}</div><div class="summary-toc">${tocLinks}</div>`:''}
+  </div>`;
+
+  // Sections with group labels
+  let lastGroup=null;
+  document.getElementById('guideContent').innerHTML=guide.sections.map(s=>{
+    let groupHtml='';
+    if(s.group&&s.group!==lastGroup){groupHtml=`<div class="group-label">${t(GROUPS[s.group]||{})}</div>`;lastGroup=s.group;}
+    return`${groupHtml}<div class="section" id="s-${s.id}"><div class="section-head"><div class="section-title">${t(s.title)}</div></div><div class="section-body">${s.content(lang)}</div></div>`;
+  }).join('');
+}
+
+function render(){
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.textContent.toLowerCase()===lang));
+  document.body.classList.toggle('reading',!!activeGuide);
+  if(activeGuide){renderGuide();}else{renderIndex();}
+}
+
+/* ========== NAVIGATION ========== */
+function openGuide(id){activeGuide=id;render();updateURL();window.scrollTo({top:0});}
+function exitGuide(){activeGuide=null;render();updateURL();window.scrollTo({top:0});}
+function toggleDet(id,btn){const b=document.getElementById('dt-'+id);if(!b)return;const o=b.classList.toggle('open');btn.classList.toggle('open',o);}
+
+/* ========== URL ========== */
+function readURL(){const p=new URLSearchParams(location.search);if(p.get('lang')&&['ru','en'].includes(p.get('lang'))){lang=p.get('lang');localStorage.setItem('lang',lang);}if(p.get('g'))activeGuide=p.get('g');}
+function updateURL(){const p=new URLSearchParams();if(activeGuide)p.set('g',activeGuide);if(lang!=='ru')p.set('lang',lang);const qs=p.toString();history.replaceState(null,'',qs?'?'+qs:location.pathname);}
+
+window.addEventListener('scroll',()=>{document.getElementById('scrollTop').classList.toggle('show',window.scrollY>400)});
+window.addEventListener('popstate',()=>{readURL();render();});
+readURL();render();
+</script>
+</body>
+</html>
