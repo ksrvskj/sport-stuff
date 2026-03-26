@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Полный семпл: шрифты и цвета</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,500;0,7..72,600;0,7..72,700;1,7..72,400;1,7..72,500&family=Commissioner:wght@400;500;600;700&family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root,[data-color="slate"]{--accent:#3B4D6B;--accent-hover:#516A8F;--accent-faint:rgba(59,77,107,.07);--source-bg:#EEF1F6;--source-border:#8DA0BE}
+[data-color="olive"]{--accent:#556B4A;--accent-hover:#6E8A5F;--accent-faint:rgba(85,107,74,.07);--source-bg:#F0F3ED;--source-border:#8FA682}
+[data-color="charcoal"]{--accent:#3A3A3A;--accent-hover:#555;--accent-faint:rgba(58,58,58,.06);--source-bg:#F0F0EE;--source-border:#A0A09A}
+[data-color="wine"]{--accent:#6B3A4D;--accent-hover:#8A4F66;--accent-faint:rgba(107,58,77,.07);--source-bg:#F5EFF2;--source-border:#B08898}
+[data-font="a"]{--body:'Literata',Georgia,serif;--ui:'Commissioner',sans-serif;--label:'Commissioner',sans-serif;--label-size:11px;--label-spacing:1.5px}
+[data-font="b"]{--body:'Merriweather',Georgia,serif;--ui:'Source Sans 3',sans-serif;--label:'Source Sans 3',sans-serif;--label-size:11px;--label-spacing:1.8px}
+[data-font="c"]{--body:'Literata',Georgia,serif;--ui:'IBM Plex Mono',monospace;--label:'IBM Plex Mono',monospace;--label-size:11px;--label-spacing:1px}
+:root{--bg:#FDFCFA;--bg-warm:#F4F2ED;--text:#1C1C1C;--text-secondary:#4A4A4A;--text-muted:#8E8E8E;--border:#D9D5CD;--border-light:#E8E5DE;--quote-bg:#EFEDE8;--draft-bg:#FFFAED;--draft-border:#D4C27A;--measure:640px;--sidebar-w:210px;--gap:64px}
+html{font-size:17px;scroll-behavior:smooth;scroll-padding-top:100px}
+body{font-family:var(--body);color:var(--text);background:var(--bg);line-height:1.78;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+::selection{background:var(--accent-faint)}
+a{color:var(--accent);text-decoration-thickness:1px;text-underline-offset:3px}
+a:hover{color:var(--accent-hover)}
+.controls{position:sticky;top:0;z-index:100;background:#2A2A2A;color:#ccc;padding:10px 32px;display:flex;gap:32px;align-items:center;font-family:system-ui,sans-serif;font-size:12px;box-shadow:0 2px 12px rgba(0,0,0,.15)}
+.ctrl-group{display:flex;align-items:center;gap:8px}
+.ctrl-label{font-weight:600;color:#888;text-transform:uppercase;letter-spacing:1px;font-size:10px;margin-right:4px}
+.ctrl-btn{background:#3A3A3A;border:1px solid #555;color:#ccc;padding:5px 12px;border-radius:4px;cursor:pointer;font-size:11px;font-family:inherit;transition:all .1s}
+.ctrl-btn:hover{background:#4A4A4A;color:#fff}
+.ctrl-btn.active{background:var(--accent);border-color:var(--accent);color:#fff}
+.ctrl-swatch{width:16px;height:16px;border-radius:3px;border:2px solid transparent;cursor:pointer;transition:all .1s}
+.ctrl-swatch:hover{transform:scale(1.15)}
+.ctrl-swatch.active{border-color:#fff}
+.ctrl-swatch[data-c="slate"]{background:#3B4D6B}
+.ctrl-swatch[data-c="olive"]{background:#556B4A}
+.ctrl-swatch[data-c="charcoal"]{background:#3A3A3A}
+.ctrl-swatch[data-c="wine"]{background:#6B3A4D}
+.page{display:grid;grid-template-columns:var(--sidebar-w) minmax(0,var(--measure));gap:var(--gap);max-width:calc(var(--sidebar-w) + var(--measure) + var(--gap) + 80px);margin:0 auto;padding:48px 40px 140px}
+.sidebar{position:relative}
+.toc{position:sticky;top:100px;font-family:var(--ui);font-size:13px;line-height:1.55;max-height:calc(100vh - 120px);overflow-y:auto}
+.toc::-webkit-scrollbar{width:2px}
+.toc::-webkit-scrollbar-thumb{background:var(--border)}
+.toc-label{font-family:var(--label);font-size:var(--label-size);font-weight:600;letter-spacing:var(--label-spacing);text-transform:uppercase;color:var(--text-muted);margin-bottom:18px}
+.toc ol{list-style:none}
+.toc li{margin-bottom:2px}
+.toc a{color:var(--text-muted);text-decoration:none;display:block;padding:5px 0 5px 14px;border-left:1.5px solid transparent;transition:all .12s}
+.toc a:hover{color:var(--text-secondary)}
+.toc a.active{color:var(--accent);border-left-color:var(--accent);font-weight:600}
+.toc .toc-sub{padding-left:14px}
+.toc .toc-sub a{font-size:12px;padding:3px 0 3px 14px}
+.content{min-width:0}
+.article-header{margin-bottom:48px;padding-bottom:40px;border-bottom:1px solid var(--border)}
+.article-kicker{font-family:var(--label);font-size:var(--label-size);font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:22px}
+.article-title{font-family:var(--body);font-size:2rem;font-weight:700;line-height:1.22;margin-bottom:16px;letter-spacing:-0.015em;max-width:560px}
+.article-subtitle{font-family:var(--body);font-size:1.05rem;color:var(--text-secondary);line-height:1.6;font-style:italic;max-width:520px}
+.article-meta{margin-top:28px;font-family:var(--ui);font-size:13px;color:var(--text-muted)}
+.content h2{font-family:var(--body);font-size:1.32rem;font-weight:700;margin:56px 0 10px;line-height:1.28}
+.chapter-num{font-family:var(--label);font-weight:600;color:var(--accent);font-size:0.8em;margin-right:5px}
+.content h3{font-family:var(--ui);font-size:0.82rem;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(--text-secondary);margin:36px 0 12px}
+.content p{margin-bottom:1.1em}
+.section-rule{width:100%;height:0;border:none;border-top:1px solid var(--border);margin:52px 0 48px}
+.preface{background:var(--bg-warm);border:1px solid var(--border);border-radius:6px;padding:28px 32px;margin-bottom:44px;font-size:0.94rem}
+.preface-title{font-family:var(--ui);font-weight:600;font-size:15px;margin-bottom:14px}
+.content blockquote{background:var(--quote-bg);border-left:2.5px solid var(--border);padding:18px 22px;margin:22px 0;border-radius:0 4px 4px 0;font-size:0.93rem}
+.content blockquote p:last-child{margin-bottom:0}
+.source-quote{background:var(--source-bg);border-left:2.5px solid var(--source-border);padding:22px 24px;margin:26px 0;border-radius:0 4px 4px 0}
+.source-label{font-family:var(--label);font-size:10.5px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--source-border);margin-bottom:10px}
+.source-quote p{font-size:0.92rem;line-height:1.72}
+.source-quote p:last-of-type{margin-bottom:0}
+.draft-note{background:var(--draft-bg);border:1px dashed var(--draft-border);padding:14px 18px;margin:20px 0;border-radius:3px;font-family:var(--ui);font-size:13px;color:#8B7730;line-height:1.5}
+.draft-note::before{content:'✎ заметка редактора';display:block;font-family:var(--label);font-weight:600;font-size:10px;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;opacity:0.6}
+.key-points{background:#F6F5F2;border:1px solid var(--border);border-radius:6px;padding:26px 28px;margin:28px 0}
+.kp-title{font-family:var(--label);font-weight:600;font-size:var(--label-size);letter-spacing:1.2px;text-transform:uppercase;color:var(--text-secondary);margin-bottom:16px}
+.key-points ul{list-style:none}
+.key-points li{padding:9px 0 9px 20px;position:relative;font-size:0.92rem;line-height:1.65;border-bottom:1px solid var(--border-light)}
+.key-points li:last-child{border-bottom:none}
+.key-points li::before{content:'—';position:absolute;left:0;color:var(--accent);font-weight:700}
+.key-points li strong{color:var(--accent);font-weight:600}
+.why-matters{margin:32px 0 0;padding:20px 0 0;border-top:1px solid var(--border-light)}
+.wm-title{font-family:var(--label);font-size:10.5px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+.authors-block{margin-top:64px;padding-top:32px;border-top:2px solid var(--text)}
+.ab-title{font-family:var(--label);font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted);margin-bottom:18px}
+.authors-list{display:flex;flex-wrap:wrap;gap:6px 20px;font-family:var(--ui);font-size:15px;font-weight:600}
+.authors-list .anon{color:var(--text-muted);font-weight:400;font-style:italic}
+@media(max-width:960px){.page{grid-template-columns:1fr;padding:16px 16px 80px;gap:0}.sidebar{margin-bottom:32px}.toc{position:relative;top:0;max-height:none;background:var(--bg-warm);padding:16px 20px;border-radius:6px;border:1px solid var(--border)}.article-title{font-size:1.5rem}html{font-size:16px}.controls{flex-wrap:wrap;gap:12px;padding:10px 16px}}
+</style>
+</head>
+<body data-font="a" data-color="slate">
+
+<div class="controls">
+  <div class="ctrl-group">
+    <span class="ctrl-label">Шрифт</span>
+    <button class="ctrl-btn active" onclick="setFont('a',this)">А: Literata + Commissioner</button>
+    <button class="ctrl-btn" onclick="setFont('b',this)">Б: Merriweather + Source Sans</button>
+    <button class="ctrl-btn" onclick="setFont('c',this)">В: Literata + Plex Mono</button>
+  </div>
+  <div class="ctrl-group">
+    <span class="ctrl-label">Цвет</span>
+    <div class="ctrl-swatch active" data-c="slate" onclick="setColor('slate',this)" title="Сине-серый"></div>
+    <div class="ctrl-swatch" data-c="olive" onclick="setColor('olive',this)" title="Оливковый"></div>
+    <div class="ctrl-swatch" data-c="charcoal" onclick="setColor('charcoal',this)" title="Графит"></div>
+    <div class="ctrl-swatch" data-c="wine" onclick="setColor('wine',this)" title="Тёмное вино"></div>
+  </div>
+</div>
+
+<div class="page">
+<aside class="sidebar">
+<nav class="toc">
+  <div class="toc-label">Содержание</div>
+  <ol>
+    <li><a href="#preface" class="active">О нестационарных очередях</a></li>
+    <li><a href="#intro">Предуведомление</a></li>
+    <li class="toc-sub"><a href="#who">Кто мы такие</a></li>
+    <li class="toc-sub"><a href="#why">Зачем мы это сделали</a></li>
+    <li><a href="#summary">Тезисно</a></li>
+    <li><a href="#ch1">1. Равновесие Нэша и борщ</a></li>
+    <li><a href="#ch4">4. Косинусная мера сходства</a></li>
+    <li><a href="#ch6">6. Стратегические клиенты</a></li>
+    <li><a href="#conclusion">Заключение</a></li>
+  </ol>
+</nav>
+</aside>
+
+<main class="content">
+
+<header class="article-header">
+  <div class="article-kicker">Операционные исследования · Разбор</div>
+  <h1 class="article-title">О&nbsp;нестационарных очередях, галушках и&nbsp;равновесии Нэша</h1>
+  <p class="article-subtitle">Почему стратегическое поведение клиентов в&nbsp;системах массового обслуживания напоминает борьбу за&nbsp;последний вареник на&nbsp;тарелке</p>
+  <div class="article-meta">Март 2026 · ~40 мин чтения</div>
+</header>
+
+<section class="preface" id="preface">
+  <div class="preface-title">О нестационарных очередях и человеческой природе</div>
+  <p>Всякий, кто стоял в очереди в голландскую булочную в субботу утром, интуитивно понимает проблему стратегического поведения. Вы видите очередь из семи человек. Вы оцениваете длину витрины. Вы прикидываете, останется ли ржаной хлеб к вашему подходу, или стоит переключиться на круассан. Это и есть make-to-stock система с информированными клиентами.</p>
+  <p>Как писал Цицерон в трактате «О природе богов»: всё, что существует, существует в определённом количестве и подчиняется определённому порядку. Очередь — это порядок. Дефицит — это количество. Нетерпение — это человеческая природа. Задача операционных исследований — примирить все три.</p>
+</section>
+
+<section id="intro">
+  <h2>Предуведомление</h2>
+  <p>Настоящий текст представляет собой заполнитель для проверки типографических решений и не содержит ни грамма научной истины. Любое сходство с реальными диссертациями, живыми или защищёнными, является исключительно стилистическим приёмом. Мы не несём ответственности за приступы академической ностальгии.</p>
+  <p>Как отмечал Сенека в «Нравственных письмах к Луцилию», нет ничего хуже, чем учёный, который притворяется, будто читает чужой текст внимательно, а на самом деле уже думает об обеде. Впрочем, возможно, Сенека этого не отмечал. Проверять мы не стали, как и авторы многих других публикаций.</p>
+  <p>Велосипедная дорожка от Лейдена до Гааги занимает примерно 45 минут при попутном ветре и вечность при встречном. Это не имеет отношения к теме, но задаёт правильный темп чтения. Если вы читаете быстрее 45 минут — вы торопитесь. Если медленнее — вероятно, ветер встречный.</p>
+</section>
+
+<section id="who">
+  <h3>Кто мы такие</h3>
+  <p>Мы — группа людей, которые в разное время пытались понять поведение очередей и обнаружили, что очереди ведут себя значительно лучше людей. Некоторые из нас работают в университетах, другие в них застряли. Третьи давно уехали в индустрию, но продолжают ставить ссылки на arXiv в слэк-каналах.</p>
+  <div class="draft-note">Рецензент № 3 настаивает, что вареники — это не пельмени. Рецензент № 1 настаивает, что это не важно. Рецензент № 2 прислал фотографию своего обеда без комментариев. Редколлегия постановила: вопрос выносится за рамки данной публикации и передаётся комитету по этике общепита.</div>
+</section>
+
+<section id="why">
+  <h3>Зачем мы это сделали</h3>
+  <p>Марк Аврелий писал: «Не тратьте больше времени на споры о том, каким должен быть хороший человек. Будьте им». Мы не спорим о том, какой должна быть хорошая система массового обслуживания. Мы просто проверяем шрифты.</p>
+  <p>Кроме того, существует давняя традиция использования кулинарных метафор в теории очередей. Очередь за хлебом. Порция обслуживания. Голодное ожидание. Дисциплина обслуживания, в конце концов, — звучит как правила поведения в школьной столовой. Мы решили довести эту традицию до абсурда, потому что наука заслуживает абсурда чаще, чем ей достаётся.</p>
+</section>
+
+<hr class="section-rule">
+
+<section id="summary">
+  <h2>Тезисно</h2>
+  <p>Рассмотрим систему с пуассоновским потоком клиентов и экспоненциальным временем обслуживания. Предположим, что каждый клиент обладает стратегическим мышлением, но не обладает терпением. Предположим далее, что на кухне осталось конечное число вареников.</p>
+  <div class="key-points">
+    <div class="kp-title">Ключевые результаты</div>
+    <ul>
+      <li>Равновесие Нэша в очереди за варениками существует тогда и только тогда, когда количество вареников строго превышает количество нетерпеливых клиентов. <strong>Это тривиально, но печально.</strong></li>
+      <li>Стратегическое поведение клиента, наблюдающего пустеющую витрину, описывается задачей оптимальной остановки. <strong>Решение: уходить, когда остались только с капустой.</strong></li>
+      <li>Информированность клиентов о длине очереди снижает социальное благосостояние в 73% случаев. <strong>Неведение — блаженство, в том числе в теории очередей.</strong></li>
+      <li>Модель make-to-stock с нетерпеливыми клиентами сводится к задаче о разорении игрока, если игроком считать повара. <strong>Повар всегда разоряется к обеду.</strong></li>
+    </ul>
+  </div>
+</section>
+
+<hr class="section-rule">
+
+<section id="ch1">
+  <h2><span class="chapter-num">1.</span> Равновесие Нэша и борщ: неожиданные параллели</h2>
+  <p>Рассмотрим столовую Лейденского университета как систему массового обслуживания с двумя серверами (горячее и салат-бар) и стратегически мыслящими клиентами. Каждый клиент при входе наблюдает длину обеих очередей и принимает решение. Борщ или не борщ — вот в чём вопрос.</p>
+  <h3>Постановка задачи</h3>
+  <p>Пусть λ — интенсивность потока голодных аспирантов в обеденное время (эмпирически: λ ≈ 47 чел./час, пик приходится на 12:17, что совпадает с окончанием коллоквиума по стохастическим процессам). Пусть μ₁ — скорость обслуживания на раздаче горячего, а μ₂ — скорость на салат-баре. Заметим, что μ₂ существенно зависит от наличия авокадо.</p>
+  <p>Тит Лукреций Кар в поэме «О природе вещей» замечал, что атомы движутся в пустоте, случайно отклоняясь от прямолинейной траектории. Этот «клинамен» — случайное отклонение — удивительно точно описывает поведение аспиранта, который шёл за борщом, но по дороге увидел пирожки и отклонился.</p>
+  <h3>Что с этим не так</h3>
+  <p>Модель предполагает, что все клиенты рациональны. В реальности значительная доля аспирантов Лейденского университета приходит в столовую не ради еды, а чтобы постоять у кофемашины и обсудить, почему их код на Python работает медленнее, чем обещал Stack Overflow. Эти клиенты не участвуют в очереди за борщом, но блокируют проход между раздачей и кассой, создавая отрицательную экстерналию для тех, кто действительно голоден. Модель Нэша не учитывает людей, застрявших у кофемашины.</p>
+  <div class="why-matters">
+    <div class="wm-title">Почему это важно</div>
+    <p>Если равновесие Нэша в столовой не существует (а мы подозреваем, что это так), то ценообразование на борщ требует пересмотра. Кроме того, из нашего анализа следует, что оптимальное время обеда — 11:45, до коллоквиума, а не после. Впрочем, это означает пропуск лекции, что создаёт конфликт с другим равновесием — академическим.</p>
+  </div>
+</section>
+
+<hr class="section-rule">
+
+<section id="ch4">
+  <h2><span class="chapter-num">4.</span> Косинусная мера сходства между борщом и гаспачо</h2>
+  <p>В совместной работе с Г. и Г. (инициалы изменены ради стиля, но не ради конфиденциальности — все знают, кто это) мы разработали метрику, позволяющую оценить степень сходства между двумя супами в n-мерном пространстве признаков. Признаки включают: температуру подачи, наличие свёклы, кислотность, густоту и степень ностальгии, которую суп вызывает у потребителя.</p>
+  <h3>Предыстория</h3>
+  <p>Идея возникла после доклада на конференции SWI, где один из рецензентов спросил: «А в чём, собственно, разница между вашей моделью и предыдущей?». Мы задумались. Действительно, в чём? Нужна была мера сходства. Мы посмотрели на косинусную меру, потом на борщ, потом снова на меру, и решили, что одно объясняет другое.</p>
+  <h3>Что с этим не так</h3>
+  <p>Плиний Старший в «Естественной истории» подробно описывает свёклу, однако ни слова не говорит о косинусных мерах. Это упущение двухтысячелетней давности мы постараемся исправить в нашей статье для SWI Proceedings. Отдельную сложность представляет тот факт, что n-мерное пространство супов плохо визуализируется. Мы пробовали t-SNE, но все супы слиплись в один кластер, что, возможно, является содержательным результатом.</p>
+  <div class="source-quote">
+    <div class="source-label">Из рецензии анонимного рецензента № 2 · конференция ecqt, Рейкьявик</div>
+    <p>«Авторы утверждают, что косинусная мера между борщом и гаспачо составляет 0.34, что соответствует "умеренному сходству". Рецензент находит это значение подозрительно точным. Откуда взялось 0.34? Авторы провели опрос? Они попробовали оба супа? Были ли супы одинаковой свежести? Рецензент настоятельно рекомендует добавить доверительный интервал и указать ресторан».</p>
+  </div>
+  <p>Отметим также, что в переписках между авторами (протокол XMPP, зашифрованные каналы, привычка, оставшаяся от студенческих лет) обсуждалась гипотеза, что все славянские супы образуют компактную группу Ли в пространстве вкусов. Доказательство этой гипотезы выходит за рамки настоящей работы и, вероятно, за рамки математики в целом.</p>
+  <blockquote>
+    <p>Основные переменные модели: температура подачи (T), содержание свёклы (β), кислотность (pH), густота (ρ), ностальгический индекс (Ψ). Для гаспачо Ψ ≈ 0, для борща бабушкиного Ψ → ∞.</p>
+  </blockquote>
+  <div class="why-matters">
+    <div class="wm-title">Почему это важно</div>
+    <p>Если мы не можем измерить сходство между двумя супами, как мы можем измерить сходство между двумя моделями массового обслуживания? Вопрос риторический. Ответ — никак, но это не мешает нам публиковать статьи. Как замечал Овидий в «Метаморфозах»: всё изменяется, ничто не исчезает. Это относится и к моделям в теории очередей — они не исчезают, они мутируют в новые статьи.</p>
+  </div>
+</section>
+
+<hr class="section-rule">
+
+<section id="ch6">
+  <h2><span class="chapter-num">6.</span> Стратегические клиенты и нестратегические велосипеды</h2>
+  <p>В модели стратегического поведения клиент, прибывающий в систему, наблюдает текущее состояние и принимает решение: вступить в очередь или уехать на велосипеде в «Альберт Хейн» через дорогу. Эта задача формализуется как задача оптимальной остановки с неполной информацией и голландским ветром в качестве случайного фактора.</p>
+  <h3>Наблюдения из поля</h3>
+  <p>Мы провели эмпирическое наблюдение в столовой Математического института на Ниелс-Борвег, 1. Результаты тревожны. Из 128 наблюдавшихся клиентов 94 посмотрели на очередь, вздохнули и ушли. 23 встали в очередь и простояли в среднем 7.2 минуты. 11 зашли, увидели знакомого и забыли, зачем пришли. Средняя полезность для последней группы оказалась наивысшей.</p>
+  <div class="source-quote">
+    <div class="source-label">Из письма научного руководителя аспиранту · октябрь 2024</div>
+    <p>«Дорогая коллега, мне показалось, что в параграфе 3.7 формула для стационарного распределения содержит опечатку: должно быть μ, а не λ. Впрочем, возможно, я ошибаюсь. Я пишу это в поезде из Схипхола, а в поезде из Схипхола все формулы выглядят одинаково. Давай обсудим в четверг, если я не забуду».</p>
+  </div>
+  <div class="source-quote">
+    <div class="source-label">Из протокола заседания кафедры · стохастические операционные исследования</div>
+    <p>«Слушали: о целесообразности включения кулинарных метафор в текст диссертации. Постановили: метафоры допустимы, если они улучшают интуитивное понимание. Борщ допустим. Галушки — под вопросом. Голосование: за — 3, против — 1, воздержался — 1 (мотивировка: не пробовал галушки)».</p>
+  </div>
+  <p>Эпиктет учил: не требуй, чтобы события происходили так, как ты хочешь, — желай, чтобы они происходили так, как происходят, и жизнь твоя потечёт счастливо. Мы рекомендуем этот подход всем, кто стоит в очереди и наблюдает, как заканчиваются вареники. Принятие — это тоже стратегия, хотя и не та, которую описывает наша модель.</p>
+  <div class="draft-note">Вставить сюда результаты симуляций на Python/SciPy. Графики нарисовать в matplotlib, не забыть подписать оси. Научрук просил не забыть про доверительные интервалы. Повар из столовой просил не забыть про борщ.</div>
+</section>
+
+<hr class="section-rule">
+
+<section id="conclusion">
+  <h2>Заключение</h2>
+  <p>Подводя итоги, мы можем утверждать следующее: стратегическое поведение клиентов в системах массового обслуживания с конечным запасом описывается моделью, которую мы пока не до конца формализовали, но зато красиво оформили типографически. Как справедливо отмечал Гораций: начавший — уже сделал половину дела. Мы начали, и это уже кое-что.</p>
+  <p>Если ставить вопрос не как «существует ли равновесие Нэша в столовой Лейденского университета», а как «стоит ли идти на обед до или после коллоквиума» — ответ очевиден. До. Всегда до. Борщ не ждёт.</p>
+  <div class="source-quote">
+    <div class="source-label">Из диссертации, которая когда-нибудь будет защищена</div>
+    <p>«Полученные результаты свидетельствуют о том, что информированность клиентов о текущем состоянии запасов может приводить как к повышению, так и к понижению социального благосостояния, в зависимости от параметров системы и настроения повара. Дальнейшие исследования необходимы. Дальнейшие исследования всегда необходимы».</p>
+  </div>
+  <p>Мы благодарим голландский ветер за мотивацию ездить быстрее, столовую Математического института за эмпирические данные, а также всех, кто дочитал до этого места, хотя давно понял, что это тестовый текст для проверки шрифтов и цветовой палитры.</p>
+</section>
+
+<div class="authors-block">
+  <div class="ab-title">Авторы и подписавшиеся</div>
+  <div class="authors-list">
+    <span>Повар столовой MI</span>
+    <span>Кот с Ниелс-Борвег</span>
+    <span>Рецензент № 2</span>
+    <span>Анонимный вареник</span>
+    <span>Тит Лукреций Кар (посмертно)</span>
+    <span class="anon">и голландский ветер, пожелавший остаться попутным</span>
+  </div>
+</div>
+
+</main>
+</div>
+
+<script>
+function setFont(f,el){document.body.setAttribute('data-font',f);document.querySelectorAll('.ctrl-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active')}
+function setColor(c,el){document.body.setAttribute('data-color',c);document.querySelectorAll('.ctrl-swatch').forEach(s=>s.classList.remove('active'));el.classList.add('active')}
+const sections=document.querySelectorAll('section[id]');const tocLinks=document.querySelectorAll('.toc a');
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){tocLinks.forEach(l=>l.classList.remove('active'));const link=document.querySelector('.toc a[href="#'+e.target.id+'"]');if(link)link.classList.add('active')}})},{rootMargin:'-100px 0px -65% 0px'});
+sections.forEach(s=>obs.observe(s));
+</script>
+</body>
+</html>

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Components — Dutch Textbook</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="dutch.css">
+<style>
+h1{font-size:22px;font-weight:600;margin-bottom:4px}
+.page-sub{font-size:12px;color:var(--dim);margin-bottom:32px}
+h2{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:2.5px;color:var(--accent);opacity:.5;margin:32px 0 12px;padding-top:12px;border-top:1px solid var(--border)}
+h3{font-size:14px;font-weight:600;color:var(--text);margin:16px 0 8px}
+.cls{font-size:10px;font-weight:500;color:var(--dim);font-family:var(--mono);margin-left:6px}
+.tax{font-size:11px;color:var(--dim);font-style:italic;margin-bottom:8px}
+</style>
+</head>
+<body style="padding:20px 16px 80px;max-width:680px;margin:0 auto">
+
+<h1>Component Catalog</h1>
+<div class="page-sub">3 base containers · 6 row types · standalone · structural</div>
+
+<!-- ===== LEFT-BORDER ===== -->
+<h2>Left-Border Family</h2>
+<div class="tax">tip (2px, 4%) → rule-box (3px, 5%) → trap (3px red, 5%)</div>
+
+<h3>Rule Box <span class="cls">.rule-box</span></h3>
+<div class="rule-box"><div class="rule-text">Глагол ВСЕГДА на 2-м месте</div><div class="rule-note">Неважно, что стоит первым</div></div>
+
+<h3>Tip <span class="cls">.tip</span></h3>
+<div class="tip">Первое слово — <strong>не подлежащее</strong>? Подлежащее после глагола = <strong>инверсия</strong>.</div>
+
+<h3>Trap <span class="cls">.trap</span></h3>
+<div class="trap"><div class="trap-title">want vs omdat</div><div class="trap-desc">want — V2, omdat — V-конец</div><div class="trap-row trap-ok">✓ ...want ik <span class="v1">ben</span> ziek.</div><div class="trap-row trap-bad">✗ ...omdat ik ben ziek.</div></div>
+
+<!-- ===== TABLE ===== -->
+<h2>Container 1: Table</h2>
+<div class="tax">.dtable base + subtypes via cell classes</div>
+
+<h3>Default <span class="cls">.dtable</span></h3>
+<table class="dtable"><thead><tr><th>Тип</th><th>Союзы</th><th>Эффект</th></tr></thead><tbody>
+  <tr><td style="font-weight:500">Сочинит.</td><td class="mc">en, maar, of, want</td><td>V2</td></tr>
+  <tr><td style="font-weight:500">Подчинит.</td><td class="mc">dat, omdat, als...</td><td>V → конец</td></tr>
+</tbody></table>
+
+<h3>Pronunciation <span class="cls">.dtable + .pron-*</span></h3>
+<table class="dtable"><thead><tr><th>Буква</th><th>Звук</th><th>Примеры</th><th></th></tr></thead><tbody>
+  <tr><td class="pron-letter">g</td><td class="pron-sound">гортанный х</td><td class="pron-examples">goed, gaan</td><td class="pron-note">На юге мягче</td></tr>
+  <tr><td class="pron-letter">ij / ei</td><td class="pron-sound">между ай и эй</td><td class="pron-examples">ijs, trein</td><td class="pron-note">Одинаково!</td></tr>
+</tbody></table>
+
+<h3>Conjugation Grid <span class="cls">.dtable.conj-grid</span></h3>
+<table class="dtable conj-grid"><thead><tr><th></th><th>Форма</th></tr></thead><tbody>
+  <tr><td>ik</td><td class="mc">ben</td></tr>
+  <tr><td>jij/je</td><td class="mc">bent</td></tr>
+  <tr><td>hij/zij/het</td><td class="mc">is</td></tr>
+  <tr><td>wij/we</td><td class="mc">zijn</td></tr>
+</tbody></table>
+
+<h3>Verb Pattern <span class="cls">.vp-group + .vp-table</span></h3>
+<div class="vp-group"><div class="vp-name">ij → ee → e</div>
+<table class="vp-table"><tbody>
+  <tr><td class="vp-inf">blijven</td><td class="vp-form">bleef/bleven</td><td class="vp-form">gebleven</td><td class="vp-ru">оставаться</td></tr>
+  <tr><td class="vp-inf">schrijven</td><td class="vp-form">schreef/schreven</td><td class="vp-form">geschreven</td><td class="vp-ru">писать</td></tr>
+</tbody></table></div>
+
+<!-- ===== LIST CARD ===== -->
+<h2>Container 2: List Card</h2>
+<div class="tax">.list-card + .lc-head container, 6 interchangeable row types</div>
+
+<h3>Row: Default <span class="cls">.lc-item</span></h3>
+<div class="list-card"><div class="lc-head">Что уходит в конец</div>
+  <div class="lc-item"><span class="lc-w">Инфинитив</span><span class="lc-e">Ik wil <span class="v2">komen</span>.</span></div>
+  <div class="lc-item"><span class="lc-w">Причастие</span><span class="lc-e">Ik heb <span class="v2">gewerkt</span>.</span></div>
+</div>
+
+<h3>Row: Phrase <span class="cls">.phrase</span></h3>
+<div class="list-card"><div class="lc-head">Привет</div>
+  <div class="phrase"><span class="phrase-nl">Hoi / Hallo</span><span class="phrase-note">неформально</span></div>
+  <div class="phrase"><span class="phrase-nl">Goedemorgen</span><span class="phrase-note">до ~12:00</span></div>
+  <div class="phrase"><span class="phrase-nl">Dag</span><span class="phrase-note">нейтрально</span></div>
+</div>
+
+<h3>Row: Number <span class="cls">.num-row</span></h3>
+<div class="list-card"><div class="lc-head">0–3</div>
+  <div class="num-row"><span class="num-val">0</span><span class="num-nl">nul</span></div>
+  <div class="num-row"><span class="num-val">1</span><span class="num-nl">een / één</span><span class="num-note">één с ударением</span></div>
+  <div class="num-row"><span class="num-val">2</span><span class="num-nl">twee</span></div>
+</div>
+
+<h3>Row: Prefix/Suffix <span class="cls">.prefix-row</span></h3>
+<div class="list-card"><div class="lc-head">Приставки</div>
+  <div class="prefix-row"><span class="prefix-name">aan-</span><span class="prefix-meaning">к, при-</span><span class="prefix-ex">aankomen, aantrekken</span></div>
+  <div class="prefix-row"><span class="prefix-name">op-</span><span class="prefix-meaning">вверх, на</span><span class="prefix-ex">opstaan, opbellen</span></div>
+</div>
+<div class="list-card"><div class="lc-head">Суффиксы существительных</div>
+  <div class="prefix-row"><span class="prefix-name">-heid</span><span class="prefix-meaning"><span class="gender">de</span> качество</span><span class="prefix-ex">gezondheid, vrijheid</span></div>
+  <div class="prefix-row"><span class="prefix-name">-schap</span><span class="prefix-meaning"><span class="gender">het</span> состояние</span><span class="prefix-ex">landschap, vriendschap</span></div>
+</div>
+
+<h3>Row: Conjunction <span class="cls">.cr</span></h3>
+<div class="conj-group"><div class="cg-title">Сочинительные</div>
+  <div class="cr"><span class="cr-nl">en</span><span class="cr-ru">и</span><span class="cr-ex">...en hij <span class="v1">studeert</span>.</span></div>
+  <div class="cr"><span class="cr-nl">maar</span><span class="cr-ru">но</span><span class="cr-ex">...maar ik <span class="v1">heb</span> geen tijd.</span></div>
+</div>
+
+<h3>Row: Compound <span class="cls">.compound-row</span></h3>
+<div class="list-card"><div class="lc-head">Сложные слова</div>
+  <div class="compound-row"><div class="compound-top"><span class="compound-word">ziekenhuis</span><span class="compound-arrow">→</span><span class="compound-meaning">больница</span></div><div class="compound-parts">ziek (больной) + huis (дом)</div></div>
+  <div class="compound-row"><div class="compound-top"><span class="compound-word">stofzuiger</span><span class="compound-arrow">→</span><span class="compound-meaning">пылесос</span></div><div class="compound-parts">stof (пыль) + zuiger (сосун)</div></div>
+  <div class="compound-row"><div class="compound-top"><span class="compound-word">handschoenen</span><span class="compound-arrow">→</span><span class="compound-meaning">перчатки</span></div><div class="compound-parts">hand + schoenen</div></div>
+</div>
+
+<!-- ===== COMPARISON ===== -->
+<h2>Container 3: Comparison</h2>
+<div class="tax">2-column grid. Default = labeled. .pairs = centered mono.</div>
+
+<h3>Default <span class="cls">.comparison + .cmp</span></h3>
+<div class="comparison">
+  <div class="cmp"><div class="cmp-label">Главное (V2)</div><div class="cmp-ex">Ik <span class="v1">kan</span> niet <span class="v2">komen</span>.</div></div>
+  <div class="cmp"><div class="cmp-label">Придаточное</div><div class="cmp-ex">...<span class="conj">dat</span> ik niet <span class="v1">kan komen</span>.</div></div>
+</div>
+
+<h3>Spelling Pairs <span class="cls">.comparison.pairs</span></h3>
+<div class="comparison pairs">
+  <div class="cmp"><div class="pair-word">maan → manen</div><div class="pair-label">aa → a</div></div>
+  <div class="cmp"><div class="pair-word">man → mannen</div><div class="pair-label">nn (сохраняем краткую)</div></div>
+</div>
+
+<!-- ===== STANDALONE ===== -->
+<h2>Standalone</h2>
+
+<h3>Formula <span class="cls">.formula</span></h3>
+<div class="formula">[X] + <span class="v1">ГЛАГ</span> + [ост.] + [<span class="v2">конец</span>]</div>
+
+<h3>Example <span class="cls">.ex</span></h3>
+<div class="examples"><div class="ex">
+  <div class="ex-nl"><span class="subj">Vandaag</span> <span class="v1">werk</span> ik thuis.</div>
+  <div class="ex-ru">Сегодня я работаю дома.</div>
+  <div class="ex-note">инверсия</div>
+</div></div>
+
+<h3>Decision Tree <span class="cls">.tree</span></h3>
+<div class="tree">
+  <div class="tree-node">
+    <div class="tree-q">Это het-слово?</div>
+    <div class="tree-branches">
+      <div class="tree-b tree-b-no"><span class="tree-b-label">нет →</span><span class="tree-b-exit">всегда -e</span></div>
+      <div class="tree-b tree-b-yes"><span class="tree-b-label">да ↓</span></div>
+    </div>
+    <div class="tree-child">
+      <div class="tree-node">
+        <div class="tree-q">Определённый артикль?</div>
+        <div class="tree-branches">
+          <div class="tree-b tree-b-yes"><span class="tree-b-label">да →</span><span class="tree-b-exit">-e</span></div>
+          <div class="tree-b tree-b-no"><span class="tree-b-label">нет ↓</span></div>
+        </div>
+        <div class="tree-child">
+          <div class="tree-node">
+            <div class="tree-q">Единственное число?</div>
+            <div class="tree-branches">
+              <div class="tree-b tree-b-no"><span class="tree-b-label">нет →</span><span class="tree-b-exit">-e (мн.ч.)</span></div>
+              <div class="tree-b tree-b-yes"><span class="tree-b-label">да →</span><span class="tree-b-exit" style="color:#c53030">без -e ✓</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== STRUCTURAL ===== -->
+<h2>Structural</h2>
+
+<h3>Summary Card <span class="cls">.summary</span></h3>
+<div class="summary">
+  <div class="summary-label">Шпаргалка</div>
+  <div class="summary-rule">Главное: глагол на <span class="smono">2-м месте</span></div>
+  <div class="summary-rule">Придаточное: глагол(ы) <span class="smono">в конец</span></div>
+  <hr class="summary-divider">
+  <div class="summary-toc-label">Содержание</div>
+  <div class="summary-toc"><a href="#">Главное</a><span class="dot">·</span><a href="#">Придаточное</a><span class="dot">·</span><a href="#">Союзы</a><span class="dot">·</span><a href="#">Ловушки</a></div>
+</div>
+
+<h3>Group Label <span class="cls">.group-label</span></h3>
+<div class="group-label">Правило</div>
+
+<h3>Expandable <span class="cls">.det-btn</span></h3>
+<button class="det-btn"><span class="arr">›</span> Ещё примеры</button>
+
+<!-- ===== SYNTAX ===== -->
+<h2>Syntax Highlighting</h2>
+<div class="ex"><div class="ex-nl"><span class="subj">.subj</span> <span class="v1">.v1</span> text <span class="conj">.conj</span> text <span class="v2">.v2</span> <span class="hi">.hi</span> <span class="mc">.mc</span></div></div>
+
+</body>
+</html>
